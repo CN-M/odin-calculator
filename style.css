@@ -13,22 +13,21 @@
     align-items: center;
 }
 
-
 .calculator {
     border: 1px solid black;
-    gap: 10px;
+    border-radius: 15px;
     background-color: #1282A2;
-    padding: 40px;
+    padding: 20px;
     height: 500px;
 }
 
 .display{
-    text-align: center;
+    text-align: right;
     background-color: white;
     border: 1px solid black;
-    font-size: 20px;
-    height: 60px;
-    /* padding-right: 20px; */
+    font-size: 30px;
+    height: 80px;
+    padding-right: 30px;
 }
 
 .row {
@@ -42,7 +41,10 @@ button {
     background-color: #034078;
     color: white;
     font-size: 20px;
+}
 
+#clear {
+    width: 210px;
 }
 
 .equals {
@@ -50,5 +52,5 @@ button {
 }
 
 .equals button {
-    width: 200px;
+    width: 100%;
 }
