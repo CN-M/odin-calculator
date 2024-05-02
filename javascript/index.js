@@ -1,66 +1,124 @@
-// Add
-const add = (a, b) => a + b;
+const calcDisplay = document.querySelector(".display p");
+calcDisplay.textContent = "80085"; // Default Text Content
 
-// Subtract
-const subtract = (a, b) => a - b;
+let operator, answer;
+let hasABeenSet = false;
 
-// Multiply
-const multiply = (a, b) => a * b;
+let a = [0];
+let b = [0];
 
-// Divide
+const clear = (keepAns) => {
+  a = [0];
+  b = [0];
+  operator = undefined;
+  hasABeenSet = false;
+  if (!keepAns) {
+    answer = undefined;
+    calcDisplay.textContent = undefined;
+  }
+};
+
+const add = (a, b) => {
+  const firstNumber = parseInt(a.join(""));
+  const secondNumber = parseInt(b.join(""));
+
+  return firstNumber + secondNumber;
+};
+
+const subtract = (a, b) => {
+  const firstNumber = parseInt(a.join(""));
+  const secondNumber = parseInt(b.join(""));
+
+  return firstNumber - secondNumber;
+};
+
+const multiply = (a, b) => {
+  const firstNumber = parseInt(a.join(""));
+  const secondNumber = parseInt(b.join(""));
+
+  return firstNumber * secondNumber;
+};
+
 const divide = (a, b) => {
-  if (b !== 0) return a / b;
-  return "Hey! No division by 0";
+  const firstNumber = parseInt(a.join(""));
+  const secondNumber = parseInt(b.join(""));
+  if (secondNumber == 0) {
+    return "Hey! No division by 0";
+  }
+
+  return firstNumber / secondNumber;
 };
 
 // Operate function
 const operate = (a, b, operator) => {
+  if (operator === undefined) {
+    return "Error. Press 'clear' and try again";
+  }
+
   if (operator == "+") return add(a, b);
   if (operator == "-") return subtract(a, b);
   if (operator == "×") return multiply(a, b);
   if (operator == "÷") return divide(a, b);
 };
 
-//User inputs defaults
-let a, b, operator, answer;
-
-const aList = [];
-
-const calcDisplay = document.querySelector(".display p");
-calcDisplay.textContent = "80085"; // Default Display Content
-
-const clear = () => {
-  a = undefined;
-  b = undefined;
-  operator = undefined;
-  answer = undefined;
-  calcDisplay.textContent = undefined;
+const setTextContent = (arr) => {
+  if (!Array.isArray(arr)) {
+    return (calcDisplay.textContent = arr);
+  }
+  return (calcDisplay.textContent = parseInt(arr.join("")));
 };
 
-const showDisplay = (event) => {
-  calcDisplay.textContent = event.target.textContent;
-  if (
-    event.target.textContent == "+" ||
-    event.target.textContent == "-" ||
-    event.target.textContent == "÷" ||
-    event.target.textContent == "×"
-  ) {
-    operator = event.target.textContent;
+const setA = (arr) => {
+  a = arr;
+  hasABeenSet = true;
+};
+
+const setNumbers = () => {
+  const content = event.target.textContent;
+  if (content == "+" || content == "-" || content == "÷" || content == "×") {
+    operator = content;
+    setTextContent(operator);
+
     console.log(`Operator: ${operator}`);
-  } else if (event.target.textContent == "Clear") {
-    clear();
-  } else if (event.target.textContent == "=") {
+  } else if (content == "Clear") {
+    clear(false);
+
+    console.log("Clear");
+  } else if (content == "=") {
     answer = operate(a, b, operator);
-    calcDisplay.textContent = answer;
+    setTextContent(answer);
+    clear(true);
+
+    if (answer === "Hey! No division by 0") {
+      setA([0]);
+    } else if (answer === "Error. Press 'clear' and try again") {
+      setA([0]);
+    } else {
+      setA(answer.toString().split(""));
+    }
+
     console.log(`Answer: ${answer}`);
   } else if (operator) {
-    b = parseInt(event.target.textContent);
+    value = parseInt(content);
+    b.push(value);
+    setTextContent(b);
+
     console.log(`b: ${b}`);
+  } else if (hasABeenSet && parseInt(a.join("")) > 0) {
+    clear();
+    value = parseInt(content);
+    a.push(value);
+    setTextContent(a);
+
+    console.log(`a: ${a}`);
   } else {
-    a = parseInt(event.target.textContent);
+    value = parseInt(content);
+    a.push(value);
+    setTextContent(a);
+
     console.log(`a: ${a}`);
   }
 };
 
 const btns = document.querySelectorAll("button");
-btns.forEach((btn) => btn.addEventListener("click", showDisplay));
+btns.forEach((btn) => btn.addEventListener("click", setNumbers));
